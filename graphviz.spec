@@ -1,23 +1,23 @@
+# Note: graphviz requires gd with gif support, hence use internal one for now.
+
 Summary: 	Graph Visualization Tools
 Name: 		graphviz
-Version: 	1.10
-Release: 	0.fdr.2.rh90
+Version: 	1.12
+Release: 	0.fdr.2.1
 Epoch:		0
 Group: 		Applications/Multimedia
-Copyright: 	AT&T open source (see COPYING)
+License: 	AT&T open source (see COPYING)
 URL:  		http://www.graphviz.org/
-Source: 	graphviz-%{version}.tar.gz
+Source: 	http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-1.12.tar.gz
 BuildRoot: 	%{_tmppath}/%{name}-root
 BuildRequires:	zlib-devel libpng-devel libjpeg-devel XFree86-devel expat-devel
-BuildRequires:	bison flex tk
-BuildRequires:	tcl >= 0:8.3
+BuildRequires:	bison m4 flex tk tcl >= 0:8.3
 BuildRequires:	/usr/include/tcl.h /usr/include/tk.h
+
 %package devel
 Summary: 	Development package for %{name}
 Group: 		Development/Libraries
 Requires: 	%{name} = %{epoch}:%{version}-%{release}
-
-# -----------------------------------------------------------------------------
 
 %description
 A collection of tools and tcl packages for the manipulation and layout
@@ -28,12 +28,10 @@ A collection of tools and tcl packages for the manipulation and layout
 of graphs (as in nodes and edges, not as in barcharts).
 This package contains development files for %{name}
 
-# -----------------------------------------------------------------------------
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q
 
-# -----------------------------------------------------------------------------
 
 %build
 # XXX ix86 only used to have -ffast-math, let's use everywhere
@@ -41,7 +39,6 @@ This package contains development files for %{name}
 %configure --with-x
 make docdir=%{_docdir}/%{name} %{?_smp_mflags}
 
-# -----------------------------------------------------------------------------
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -51,12 +48,10 @@ make \
     transform='s,x,x,' \
 	install
 
-# -----------------------------------------------------------------------------
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-# -----------------------------------------------------------------------------
 
 %files
 %defattr(-,root,root)
@@ -73,14 +68,21 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/%{name}
-# libltdl in use -> need *.la
 %{_libdir}/%{name}/*.la
 %{_libdir}/%{name}/*.so
 %{_mandir}/man3/*.3*
 
-# -----------------------------------------------------------------------------
 
 %changelog
+* Thu Jun  3 2004 Ville Skyttä <ville.skytta at iki.fi> - 0:1.12-0.fdr.2
+- BuildRequire m4 to work around https://bugzilla.redhat.com/108655 on FC1.
+
+* Tue May 25 2004 Ville Skyttä <ville.skytta at iki.fi> - 0:1.12-0.fdr.1
+- Update to 1.12.
+
+* Tue Nov 11 2003 Dams <anvil[AT]livna.org> 0:1.10-0.fdr.3
+- Applied patch to fix build on FC1
+
 * Sat Aug 23 2003 Dams <anvil[AT]livna.org> 0:1.10-0.fdr.2
 - Hopefully fixed BuildRequires
 
