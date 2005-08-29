@@ -127,13 +127,13 @@ rm -rf $RPM_BUILD_ROOT
 
 # run "dot -c" to generate plugin config in %{_libdir}/%{name}/config
 %post
-%{_bindir}/dot -c 2>/dev/null
+%{_bindir}/dot -c
 
 %post tcl
-%{_bindir}/dot -c 2>/dev/null
+%{_bindir}/dot -c
 
 %post devel
-%{_bindir}/dot -c 2>/dev/null
+%{_bindir}/dot -c
 
 %changelog
 * Mon Aug 29 2005 Oliver Falk <oliver@linux-kernel.at>		- 2.6-1
