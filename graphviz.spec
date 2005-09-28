@@ -21,6 +21,7 @@ BuildRequires:		php-devel guile-devel
 BuildRequires:		fontconfig-devel xorg-x11-devel libtool-ltdl-devel
 Requires(post):		%{_bindir}/dot
 Requires(postun):	%{_bindir}/dot
+Requires:			urw-fonts
 
 %package			tcl
 Summary:			Tcl extension tools for %{name}
