@@ -4,7 +4,7 @@ Summary:			Graph Visualization Tools
 Name:				graphviz
 
 Version:			2.6
-Release:			1
+Release:			1%{?dist}
 
 Group:				Applications/Multimedia
 License:			CPL
