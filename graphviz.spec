@@ -4,7 +4,7 @@ Summary:			Graph Visualization Tools
 Name:				graphviz
 
 Version:			2.6
-Release:			2%{?dist}
+Release:			3%{?dist}
 
 Group:				Applications/Multimedia
 License:			CPL
@@ -139,6 +139,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/dot -c
 
 %changelog
+* Mon Nov 21 2005 Oliver Falk <oliver@linux-kernel.at>		- 2.6-3
+- Rebuild
+
 * Fri Nov 04 2005 Oliver Falk <oliver@linux-kernel.at>		- 2.6-2
 - BuildRequires fixes for "Modular X"; Thanks to John Ellson
 
