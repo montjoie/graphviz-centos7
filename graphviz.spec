@@ -4,7 +4,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.26.0
-Release:		3%{?dist}
+Release:		4%{?dist}
 Group:			Applications/Multimedia
 License:		CPL
 URL:			http://www.graphviz.org/
@@ -406,6 +406,9 @@ fi
 
 
 %changelog
+* Wed Jul 21 2010 David Malcolm <dmalcolm@redhat.com> - 2.26.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
+
 * Tue Jun 01 2010 Marcela Maslanova <mmaslano@redhat.com> - 2.26.0-3
 - Mass rebuild with perl-5.12.0
 
