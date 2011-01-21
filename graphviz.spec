@@ -4,7 +4,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.26.3
-Release:		1%{?dist}
+Release:		2%{?dist}
 Group:			Applications/Multimedia
 License:		CPL
 URL:			http://www.graphviz.org/
@@ -19,6 +19,7 @@ Patch2:			graphviz-2.26.0-doc-index-fix.patch
 Patch3:			graphviz-2.26.0-testsuite-sigsegv-fix.patch
 # Testsuite now do diff check also in case of err output (#645703).
 Patch4:			graphviz-2.26.0-rtest-errout-fix.patch
+Patch5:			graphviz-2.26.3-ppc-darwinhack.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		/bin/ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -210,6 +211,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch2 -p1 -b .doc-index-fix
 %patch3 -p1 -b .testsuite-sigsegv-fix
 %patch4 -p1 -b .rtest-errout-fix
+%patch5 -p1 -b .powerpc-darwin
 
 %build
 # %%define NO_IO --disable-io
@@ -416,6 +418,9 @@ fi
 
 
 %changelog
+* Fri Jan 21 2011 Karsten Hopp <karsten@redhat.com> 2.26.3-2
+- fix hack for powerpc-darwin8 in configure
+
 * Thu Jan 06 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.26.3-1
 - New version (#580017)
 - Fixed gtk plugin program-name (#640671, gtk-progname patch)
