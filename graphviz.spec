@@ -4,7 +4,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.26.3
-Release:		3%{?dist}
+Release:		4%{?dist}
 Group:			Applications/Multimedia
 License:		CPL
 URL:			http://www.graphviz.org/
@@ -31,6 +31,7 @@ BuildRequires:		gd-devel, perl-devel, DevIL-devel, R-devel, swig >= 1.3.33
 BuildRequires:		mono-core, ocaml
 %endif
 BuildRequires:		urw-fonts
+Requires:		urw-fonts
 Requires(post):		/sbin/ldconfig
 Requires(postun):	/sbin/ldconfig
 
@@ -418,6 +419,9 @@ fi
 
 
 %changelog
+* Tue Feb 22 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.26.3-4
+- Added urw-fonts to requires (#677114)
+
 * Wed Feb 09 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.26.3-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
