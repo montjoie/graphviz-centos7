@@ -4,7 +4,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.26.3
-Release:		4%{?dist}
+Release:		5%{?dist}
 Group:			Applications/Multimedia
 License:		CPL
 URL:			http://www.graphviz.org/
@@ -27,7 +27,7 @@ BuildRequires:		fontconfig-devel, libtool-ltdl-devel, ruby-devel, ruby, guile-de
 BuildRequires:		libXaw-devel, libSM-devel, libXext-devel, java-devel, php-devel
 BuildRequires:		cairo-devel >= 1.1.10, pango-devel, gmp-devel, lua-devel, gtk2-devel, libgnomeui-devel
 BuildRequires:		gd-devel, perl-devel, DevIL-devel, R-devel, swig >= 1.3.33
-%ifnarch ppc64 s390 s390x sparc64 %{arm}
+%ifnarch ppc64 s390 s390x sparc64 %{arm} alpha
 BuildRequires:		mono-core, ocaml
 %endif
 BuildRequires:		urw-fonts
@@ -36,7 +36,7 @@ Requires(post):		/sbin/ldconfig
 Requires(postun):	/sbin/ldconfig
 
 # Necessary conditionals
-%ifarch ppc64 s390 s390x sparc64 %{arm}
+%ifarch ppc64 s390 s390x sparc64 %{arm} alpha
 %global SHARP  0
 %global OCAML  0
 %else
@@ -419,6 +419,9 @@ fi
 
 
 %changelog
+* Thu Mar 03 2011 Oliver Falk <oliver@linux-kernel.at> - 2.26.3-5
+- Disable mono and ocaml on alpha
+
 * Tue Feb 22 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.26.3-4
 - Added urw-fonts to requires (#677114)
 
