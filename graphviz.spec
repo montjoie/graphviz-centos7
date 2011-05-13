@@ -4,9 +4,9 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		2%{?dist}
+Release:		3%{?dist}
 Group:			Applications/Multimedia
-License:		CPL
+License:		EPL
 URL:			http://www.graphviz.org/
 Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
 # Fix SIGSEGVs on testsuite (#645703).
@@ -404,6 +404,9 @@ fi
 
 
 %changelog
+* Fri May 13 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-3
+- Corrected license tag, the graphviz license is now EPL
+
 * Fri May 13 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-2
 - Recompiled with -fno-strict-aliasing in CXXFLAGS
 
