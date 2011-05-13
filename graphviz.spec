@@ -4,7 +4,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		1%{?dist}
+Release:		2%{?dist}
 Group:			Applications/Multimedia
 License:		CPL
 URL:			http://www.graphviz.org/
@@ -218,7 +218,7 @@ sed -i 's|_MY_JAVA_INCLUDES_|-I%{java_home}/include/ -I%{java_home}/include/linu
 	--without-ming \
 %endif
 
-make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
+make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing" CXXFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
 
 %install
 rm -rf %{buildroot} __doc
@@ -404,6 +404,9 @@ fi
 
 
 %changelog
+* Fri May 13 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-2
+- Recompiled with -fno-strict-aliasing in CXXFLAGS
+
 * Tue May 10 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-1
 - New version 2.28.0
 - Added perl-ExtUtils-Embed to BuildRequires, it is now required
