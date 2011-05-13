@@ -3,23 +3,16 @@
 
 Name:			graphviz
 Summary:		Graph Visualization Tools
-Version:		2.26.3
-Release:		5%{?dist}
+Version:		2.28.0
+Release:		1%{?dist}
 Group:			Applications/Multimedia
 License:		CPL
 URL:			http://www.graphviz.org/
 Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
-# Fix for sparc64.
-Patch0:			graphviz-sparc64.patch
-# Fix gtk plugin program-name (#640671).
-Patch1:			graphviz-2.26.0-gtk-progname.patch
-# Fix broken links in doc index (#642536).
-Patch2:			graphviz-2.26.0-doc-index-fix.patch
 # Fix SIGSEGVs on testsuite (#645703).
 Patch3:			graphviz-2.26.0-testsuite-sigsegv-fix.patch
 # Testsuite now do diff check also in case of err output (#645703).
 Patch4:			graphviz-2.26.0-rtest-errout-fix.patch
-Patch5:			graphviz-2.26.3-ppc-darwinhack.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		/bin/ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -30,7 +23,7 @@ BuildRequires:		gd-devel, perl-devel, DevIL-devel, R-devel, swig >= 1.3.33
 %ifnarch ppc64 s390 s390x sparc64 %{arm} alpha
 BuildRequires:		mono-core, ocaml
 %endif
-BuildRequires:		urw-fonts
+BuildRequires:		urw-fonts, perl-ExtUtils-Embed
 Requires:		urw-fonts
 Requires(post):		/sbin/ldconfig
 Requires(postun):	/sbin/ldconfig
@@ -153,12 +146,8 @@ Perl extension for graphviz.
 Group:			Applications/Multimedia
 Summary:		PHP extension for graphviz
 Requires:		%{name} = %{version}-%{release}
-%if %{?php_zend_api}0
 Requires:	php(zend-abi) = %{php_zend_api}
 Requires:	php(api) = %{php_core_api}
-%else
-Requires:	php-api = %{php_apiver}
-%endif
 
 %description php
 PHP extension for graphviz.
@@ -207,12 +196,8 @@ Various tcl packages (extensions) for the graphviz tools.
 
 %prep
 %setup -q
-%patch0 -p1 -b .sparc64
-%patch1 -p1 -b .gtk-progname
-%patch2 -p1 -b .doc-index-fix
 %patch3 -p1 -b .testsuite-sigsegv-fix
 %patch4 -p1 -b .rtest-errout-fix
-%patch5 -p1 -b .powerpc-darwin
 
 %build
 # %%define NO_IO --disable-io
@@ -419,6 +404,13 @@ fi
 
 
 %changelog
+* Tue May 10 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-1
+- New version 2.28.0
+- Added perl-ExtUtils-Embed to BuildRequires, it is now required
+- Fixed build failure due to change in php_zend_api macro type
+- Removed sparc64, gtk-progname, doc-index-fix, ppc-darwinhack
+  patches (all were upstreamed)
+
 * Thu Mar 03 2011 Oliver Falk <oliver@linux-kernel.at> - 2.26.3-5
 - Disable mono and ocaml on alpha
 
