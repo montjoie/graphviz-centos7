@@ -4,11 +4,13 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		3%{?dist}
+Release:		4%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
 Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
+# Fix detection of guile 2.x (#704529)
+Patch2:			graphviz-2.28.0-guile-detect.patch
 # Fix SIGSEGVs on testsuite (#645703).
 Patch3:			graphviz-2.26.0-testsuite-sigsegv-fix.patch
 # Testsuite now do diff check also in case of err output (#645703).
@@ -196,6 +198,7 @@ Various tcl packages (extensions) for the graphviz tools.
 
 %prep
 %setup -q
+%patch2 -p1 -b .guile-detect
 %patch3 -p1 -b .testsuite-sigsegv-fix
 %patch4 -p1 -b .rtest-errout-fix
 
@@ -404,6 +407,10 @@ fi
 
 
 %changelog
+* Thu May 19 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-4
+- Fixed detection of guile 2.x
+  Resolves: rhbz#704529
+
 * Fri May 13 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-3
 - Corrected license tag, the graphviz license is now EPL
 
