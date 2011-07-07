@@ -4,7 +4,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		6%{?dist}
+Release:		7%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -49,6 +49,7 @@ and edges, not as in barcharts).
 Group:			Development/Libraries
 Summary:		Development package for graphviz
 Requires:		%{name} = %{version}-%{release}, pkgconfig
+Requires:		%{name}-gd = %{version}-%{release}
 
 %description devel
 A collection of tools for the manipulation and layout of graphs (as in nodes 
@@ -407,6 +408,9 @@ fi
 
 
 %changelog
+* Thu Jul 07 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-7
+- Added gd as devel requirement
+
 * Fri Jun 17 2011 Marcela Mašláňová <mmaslano@redhat.com> - 2.28.0-6
 - Perl mass rebuild
 
