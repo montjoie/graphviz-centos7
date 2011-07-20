@@ -4,7 +4,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		7%{?dist}
+Release:		8%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -408,6 +408,9 @@ fi
 
 
 %changelog
+* Wed Jul 20 2011 Petr Sabata <contyk@redhat.com> - 2.28.0-8
+- Perl mass rebuild
+
 * Thu Jul 07 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-7
 - Added gd as devel requirement
 
