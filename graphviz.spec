@@ -34,7 +34,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		11%{?dist}
+Release:		12%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -480,6 +480,9 @@ fi
 
 
 %changelog
+* Sun Jan 08 2012 Richard W.M. Jones <rjones@redhat.com> - 2.28.0-12
+- Rebuild for OCaml 3.12.1.
+
 * Thu Dec  8 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-11
 - Added conditionals for ARRRR, DEVIL, QTAPPS (gvedit), GTS, LASI
 - Fixed conditionals for SHARP, OCAML
