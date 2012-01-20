@@ -29,12 +29,17 @@
 %endif
 
 %global php_extdir %(php-config --extension-dir 2>/dev/null || echo %{_libdir}/php4)
-%global php_apiver %((echo 0; php -i 2>/dev/null | sed -n 's/^PHP API => //p') | tail -1)
+# Fix private-shared-object-provides
+# RPM 4.8
+%{?filter_provides_in: %filter_provides_in %{php_extdir}/.*\.so$}
+%{?filter_setup}
+# RPM 4.9
+%global __provides_exclude_from %{?__provides_exclude_from:%__provides_exclude_from|}%{php_extdir}/.*\\.so$
 
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		12%{?dist}
+Release:		13%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -302,6 +307,14 @@ extension=gv.so
 __EOF__
 
 %check
+# Minimal load test of php extension
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} \
+php --no-php-ini \
+    --define extension_dir=%{buildroot}%{php_extdir} \
+    --define extension=gv.so \
+    --modules | grep gv
+
+# upstream test suite
 cd rtest
 make rtest
 
@@ -480,6 +493,11 @@ fi
 
 
 %changelog
+* Wed Jan 18 2012 Remi Collet <remi@fedoraproject.org> - 2.28.0-13
+- build against php 5.4.0
+- add filter to fix private-shared-object-provides
+- add %%check for php extension
+
 * Sun Jan 08 2012 Richard W.M. Jones <rjones@redhat.com> - 2.28.0-12
 - Rebuild for OCaml 3.12.1.
 
