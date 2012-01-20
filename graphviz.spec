@@ -310,8 +310,8 @@ __EOF__
 # Minimal load test of php extension
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} \
 php --no-php-ini \
-    --define extension_dir=%{buildroot}%{php_extdir} \
-    --define extension=gv.so \
+    --define extension_dir=%{buildroot}%{_libdir}/graphviz/php/ \
+    --define extension=libgv_php.so \
     --modules | grep gv
 
 # upstream test suite
