@@ -39,7 +39,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		13%{?dist}
+Release:		14%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -260,6 +260,12 @@ find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
 # Hack in the java includes we need
 sed -i '/JavaVM.framework/!s/JAVA_INCLUDES=/JAVA_INCLUDES=\"_MY_JAVA_INCLUDES_\"/g' configure
 sed -i 's|_MY_JAVA_INCLUDES_|-I%{java_home}/include/ -I%{java_home}/include/linux/|g' configure
+# Rewrite config_ruby.rb to work with Ruby 1.9
+sed -i 's|expand(|expand(Config::|' config/config_ruby.rb
+sed -i 's|sitearchdir|vendorarchdir|' config/config_ruby.rb
+
+# get the path to search for ruby/config.h to CPPFLAGS, so that configure can find it
+export CPPFLAGS=-I`ruby -e "puts File.join(RbConfig::CONFIG['includedir'], RbConfig::CONFIG['sitearch'])"`
 %configure --with-x --disable-static --disable-dependency-tracking --without-mylibgd --with-ipsepcola --with-pangocairo --with-gdk-pixbuf \
 %if ! %{LASI}
 	--without-lasi \
@@ -493,6 +499,9 @@ fi
 
 
 %changelog
+* Mon Feb 06 2012 Vít Ondruch <vondruch@redhat.com> - 2.28.0-14
+- Rebuilt for Ruby 1.9.3.
+
 * Wed Jan 18 2012 Remi Collet <remi@fedoraproject.org> - 2.28.0-13
 - build against php 5.4.0
 - add filter to fix private-shared-object-provides
