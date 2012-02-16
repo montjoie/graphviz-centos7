@@ -39,7 +39,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		14%{?dist}
+Release:		15%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -265,7 +265,7 @@ sed -i 's|expand(|expand(Config::|' config/config_ruby.rb
 sed -i 's|sitearchdir|vendorarchdir|' config/config_ruby.rb
 
 # get the path to search for ruby/config.h to CPPFLAGS, so that configure can find it
-export CPPFLAGS=-I`ruby -e "puts File.join(RbConfig::CONFIG['includedir'], RbConfig::CONFIG['sitearch'])"`
+export CPPFLAGS=-I`ruby -e "puts File.join(RbConfig::CONFIG['includedir'], RbConfig::CONFIG['sitearch'])" || echo /dev/null`
 %configure --with-x --disable-static --disable-dependency-tracking --without-mylibgd --with-ipsepcola --with-pangocairo --with-gdk-pixbuf \
 %if ! %{LASI}
 	--without-lasi \
@@ -499,6 +499,9 @@ fi
 
 
 %changelog
+* Thu Feb 16 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.28.0-15
+- fix CPPFLAGS export so it doesn't cause issues on ARM
+
 * Mon Feb 06 2012 Vít Ondruch <vondruch@redhat.com> - 2.28.0-14
 - Rebuilt for Ruby 1.9.3.
 
