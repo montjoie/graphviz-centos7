@@ -39,7 +39,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		15%{?dist}
+Release:		16%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -499,6 +499,9 @@ fi
 
 
 %changelog
+* Tue Feb 28 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.28.0-16
+- Rebuilt for c++ ABI breakage
+
 * Thu Feb 16 2012 Peter Robinson <pbrobinson@fedoraproject.org> - 2.28.0-15
 - fix CPPFLAGS export so it doesn't cause issues on ARM
 
