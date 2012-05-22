@@ -39,7 +39,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		16%{?dist}
+Release:		17%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -295,15 +295,15 @@ export CPPFLAGS=-I`ruby -e "puts File.join(RbConfig::CONFIG['includedir'], RbCon
 make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing" CXXFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
 
 %install
-rm -rf %{buildroot} __doc
+rm -rf %{buildroot}
 make DESTDIR=%{buildroot} \
 	docdir=%{buildroot}%{_docdir}/%{name} \
 	pkgconfigdir=%{_libdir}/pkgconfig \
 	install
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 chmod -x %{buildroot}%{_datadir}/%{name}/lefty/*
-cp -a %{buildroot}%{_datadir}/%{name}/doc __doc
-rm -rf %{buildroot}%{_datadir}/%{name}/doc
+mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
+mv %{buildroot}%{_datadir}/%{name}/doc/* %{buildroot}%{_docdir}/%{name}-%{version}
 
 # PHP configuration file
 %{__mkdir_p} %{buildroot}%{_sysconfdir}/php.d
@@ -311,6 +311,12 @@ rm -rf %{buildroot}%{_datadir}/%{name}/doc
 ; Enable %{name} extension module
 extension=gv.so
 __EOF__
+
+# Remove executable modes from demos
+find %{buildroot}%{_datadir}/%{name}/demo -type f -exec chmod a-x {} ';'
+
+# Move demos to doc
+mv %{buildroot}%{_datadir}/%{name}/demo %{buildroot}%{_docdir}/%{name}-%{version}/
 
 %check
 # Minimal load test of php extension
@@ -374,6 +380,9 @@ fi
 %{_mandir}/man1/*.1*
 %{_mandir}/man7/*.7*
 %dir %{_datadir}/graphviz
+%exclude %{_docdir}/%{name}-%{version}/html
+%exclude %{_docdir}/%{name}-%{version}/pdf
+%exclude %{_docdir}/%{name}-%{version}/demo
 %{_datadir}/graphviz/lefty
 
 %if %{QTAPPS}
@@ -406,7 +415,9 @@ fi
 
 %files doc
 %defattr(-,root,root,-)
-%doc __doc/*
+%doc %{_docdir}/%{name}-%{version}/html
+%doc %{_docdir}/%{name}-%{version}/pdf
+%doc %{_docdir}/%{name}-%{version}/demo
 
 %files gd
 %defattr(-,root,root,-)
@@ -491,7 +502,6 @@ fi
 %defattr(-,root,root,-)
 %{_libdir}/graphviz/tcl/
 %{_libdir}/tcl*/*
-%{_datadir}/graphviz/demo/
 # hack to include gv.3tcl only if available
 #  always includes tcldot.3tcl, gdtclft.3tcl
 %{_mandir}/man3/*.3tcl*
@@ -499,6 +509,10 @@ fi
 
 
 %changelog
+* Tue May 22 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-17
+- All docs are now installed into /usr/share/doc/graphviz-%%{version}
+- Demos packaged as docs not to automatically bring in unnecessary deps
+
 * Tue Feb 28 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.28.0-16
 - Rebuilt for c++ ABI breakage
 
