@@ -39,7 +39,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		17%{?dist}
+Release:		18%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -297,13 +297,18 @@ make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing" CXXFLAGS="$RPM
 %install
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} \
-	docdir=%{buildroot}%{_docdir}/%{name} \
+	docdir=%{buildroot}%{_docdir}/%{name}-%{version} \
 	pkgconfigdir=%{_libdir}/pkgconfig \
 	install
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 chmod -x %{buildroot}%{_datadir}/%{name}/lefty/*
+
+# Move docs to the right place
 mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
 mv %{buildroot}%{_datadir}/%{name}/doc/* %{buildroot}%{_docdir}/%{name}-%{version}
+
+# Install README
+install -m0644 README %{buildroot}%{_docdir}/%{name}-%{version}
 
 # PHP configuration file
 %{__mkdir_p} %{buildroot}%{_sysconfdir}/php.d
@@ -372,7 +377,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING ChangeLog NEWS README
+%doc %{_docdir}/%{name}-%{version}
 %{_bindir}/*
 %dir %{_libdir}/graphviz
 %{_libdir}/*.so.*
@@ -509,6 +514,9 @@ fi
 
 
 %changelog
+* Wed May 23 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-18
+- Improved docs handling code in spec to be backward compatible with older RPM
+
 * Tue May 22 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-17
 - All docs are now installed into /usr/share/doc/graphviz-%%{version}
 - Demos packaged as docs not to automatically bring in unnecessary deps
