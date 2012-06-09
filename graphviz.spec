@@ -1,9 +1,13 @@
 # Necessary conditionals
 %ifarch ppc64 s390 s390x sparc64 %{arm} alpha
 %global SHARP  0
-%global OCAML  0
 %else
 %global SHARP  1
+%endif
+
+%ifarch alpha s390 s390x sparc64
+%global OCAML  0
+%else
 %global OCAML  1
 %endif
 
@@ -39,7 +43,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		18%{?dist}
+Release:		19%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -50,6 +54,8 @@ Patch2:			graphviz-2.28.0-guile-detect.patch
 Patch3:			graphviz-2.26.0-testsuite-sigsegv-fix.patch
 # Testsuite now do diff check also in case of err output (#645703).
 Patch4:			graphviz-2.26.0-rtest-errout-fix.patch
+# Actually SWIG is broken, but patch the output to work around it.
+Patch5:                 graphviz-ocaml-4.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		/bin/ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -248,6 +254,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch2 -p1 -b .guile-detect
 %patch3 -p1 -b .testsuite-sigsegv-fix
 %patch4 -p1 -b .rtest-errout-fix
+%patch5 -p1 -b .ocaml4
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -514,6 +521,11 @@ fi
 
 
 %changelog
+* Sat Jun  9 2012 Richard W.M. Jones <rjones@redhat.com> - 2.28.0-19
+- Rebuild for OCaml 4.00.0.
+- Enable OCaml on arm and ppc64, since there are working native compilers
+  for both.
+
 * Wed May 23 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-18
 - Improved docs handling code in spec to be backward compatible with older RPM
 
