@@ -43,7 +43,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		19%{?dist}
+Release:		20%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -521,6 +521,9 @@ fi
 
 
 %changelog
+* Sun Jun 10 2012 Petr Pisar <ppisar@redhat.com> - 2.28.0-20
+- Perl 5.16 rebuild
+
 * Sat Jun  9 2012 Richard W.M. Jones <rjones@redhat.com> - 2.28.0-19
 - Rebuild for OCaml 4.00.0.
 - Enable OCaml on arm and ppc64, since there are working native compilers
