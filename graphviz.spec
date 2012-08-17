@@ -40,10 +40,15 @@
 # RPM 4.9
 %global __provides_exclude_from %{?__provides_exclude_from:%__provides_exclude_from|}%{php_extdir}/.*\\.so$
 
+# Fix for the 387 extended precision (rhbz#772637)
+%ifarch i386 i686
+%global FFSTORE -ffloat-store
+%endif
+
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		21%{?dist}
+Release:		22%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -260,10 +265,6 @@ Various tcl packages (extensions) for the graphviz tools.
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
 
 %build
-# %%define NO_IO --disable-io
-
-# XXX ix86 only used to have -ffast-math, let's use everywhere
-%{expand: %%define optflags %{optflags} -ffast-math}
 # Hack in the java includes we need
 sed -i '/JavaVM.framework/!s/JAVA_INCLUDES=/JAVA_INCLUDES=\"_MY_JAVA_INCLUDES_\"/g' configure
 sed -i 's|_MY_JAVA_INCLUDES_|-I%{java_home}/include/ -I%{java_home}/include/linux/|g' configure
@@ -299,7 +300,7 @@ export CPPFLAGS=-I`ruby -e "puts File.join(RbConfig::CONFIG['includedir'], RbCon
 	--without-qt \
 %endif
 
-make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing" CXXFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing"
+make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing %{?FFSTORE}" CXXFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing %{?FFSTORE}"
 
 %install
 rm -rf %{buildroot}
@@ -330,6 +331,9 @@ find %{buildroot}%{_datadir}/%{name}/demo -type f -exec chmod a-x {} ';'
 # Move demos to doc
 mv %{buildroot}%{_datadir}/%{name}/demo %{buildroot}%{_docdir}/%{name}-%{version}/
 
+# Rename python demos to prevent byte compilation
+find %{buildroot}%{_docdir}/%{name}-%{version}/demo -type f -name "*.py" -exec mv {} {}.demo ';'
+
 %check
 # Minimal load test of php extension
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} \
@@ -352,39 +356,51 @@ rm -rf %{buildroot}
 # if there is no dot after everything else is done, then remove config
 %postun
 if [ $1 -eq 0 ]; then
-	rm -f %{_libdir}/graphviz/config || :
+	rm -f %{_libdir}/graphviz/config* || :
 fi
 /sbin/ldconfig
 
 %if %{DEVIL}
 # run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config
 %post devil
-%{_bindir}/dot -c
+rm -f %{_libdir}/graphviz/config*
+%{_bindir}/dot -c || :
+/sbin/ldconfig
 
 %postun devil
-[ -x %{_bindir}/dot ] && %{_bindir}/dot -c || :
+rm -f %{_libdir}/graphviz/config*
+%{_bindir}/dot -c || :
+/sbin/ldconfig
 %endif
 
+# run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config
 %post gd
-/sbin/ldconfig
+rm -f %{_libdir}/graphviz/config*
 %{_bindir}/dot -c
+/sbin/ldconfig
 
 %postun gd
+rm -f %{_libdir}/graphviz/config*
+%{_bindir}/dot -c || :
 /sbin/ldconfig
-[ -x %{_bindir}/dot ] && %{_bindir}/dot -c || :
 
 %if %{MING}
 # run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config
 %post ming
-%{_bindir}/dot -c
+rm -f %{_libdir}/graphviz/config*
+%{_bindir}/dot -c || :
+/sbin/ldconfig
 
 %postun ming
-[ -x %{_bindir}/dot ] && %{_bindir}/dot -c || :
+rm -f %{_libdir}/graphviz/config*
+%{_bindir}/dot -c || :
+/sbin/ldconfig
 %endif
 
 %files
 %defattr(-,root,root,-)
 %doc %{_docdir}/%{name}-%{version}
+%exclude %{_bindir}/dot_builtins
 %{_bindir}/*
 %dir %{_libdir}/graphviz
 %{_libdir}/*.so.*
@@ -521,6 +537,11 @@ fi
 
 
 %changelog
+* Fri Aug 17 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-22
+- dot_builtins no longer installed (lowers implicit deps)
+- Fixed post/postuns for plugins
+- Removed -ffast-math, added -ffloat-store (on i386) to fix arithmetic on i386
+
 * Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.28.0-21
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
