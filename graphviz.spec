@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		22%{?dist}
+Release:		23%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -353,7 +353,7 @@ rm -rf %{buildroot}
 /sbin/ldconfig
 %{_bindir}/dot -c
 
-# if there is no dot after everything else is done, then remove config
+# if there is no dot after everything else is done, then remove config*
 %postun
 if [ $1 -eq 0 ]; then
 	rm -f %{_libdir}/graphviz/config* || :
@@ -361,39 +361,33 @@ fi
 /sbin/ldconfig
 
 %if %{DEVIL}
-# run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config
+# run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config*
 %post devil
-rm -f %{_libdir}/graphviz/config*
-%{_bindir}/dot -c || :
+%{_bindir}/dot -c 2>/dev/null || :
 /sbin/ldconfig
 
 %postun devil
-rm -f %{_libdir}/graphviz/config*
-%{_bindir}/dot -c || :
+%{_bindir}/dot -c 2>/dev/null || :
 /sbin/ldconfig
 %endif
 
-# run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config
+# run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config*
 %post gd
-rm -f %{_libdir}/graphviz/config*
-%{_bindir}/dot -c
+%{_bindir}/dot -c 2>/dev/null || :
 /sbin/ldconfig
 
 %postun gd
-rm -f %{_libdir}/graphviz/config*
-%{_bindir}/dot -c || :
+%{_bindir}/dot -c 2>/dev/null || :
 /sbin/ldconfig
 
 %if %{MING}
-# run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config
+# run "dot -c" to generate plugin config in %%{_libdir}/graphviz/config*
 %post ming
-rm -f %{_libdir}/graphviz/config*
-%{_bindir}/dot -c || :
+%{_bindir}/dot -c 2>/dev/null || :
 /sbin/ldconfig
 
 %postun ming
-rm -f %{_libdir}/graphviz/config*
-%{_bindir}/dot -c || :
+%{_bindir}/dot -c 2>/dev/null || :
 /sbin/ldconfig
 %endif
 
@@ -537,6 +531,10 @@ rm -f %{_libdir}/graphviz/config*
 
 
 %changelog
+* Fri Aug 17 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-23
+- Silenced 'dot -c' errors/warnings in post/postun
+- Do not remove dot config in plugins post/postun
+
 * Fri Aug 17 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-22
 - dot_builtins no longer installed (lowers implicit deps)
 - Fixed post/postuns for plugins
