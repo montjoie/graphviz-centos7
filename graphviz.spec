@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		23%{?dist}
+Release:		24%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -531,6 +531,9 @@ fi
 
 
 %changelog
+* Wed Oct 17 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-24
+- Rebuilt for new ocaml
+
 * Fri Aug 17 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-23
 - Silenced 'dot -c' errors/warnings in post/postun
 - Do not remove dot config in plugins post/postun
