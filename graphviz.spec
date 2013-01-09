@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		25%{?dist}
+Release:		26%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -534,11 +534,14 @@ fi
 
 
 %changelog
-* Wed Jan  9 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-25
+* Wed Jan  9 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-26
 - Rebuilt with -fno-strict-overflow to workaround the overflow problem
   (upstream ticket: http://www.graphviz.org/mantisbt/view.php?id=2244)
 - The dot_builtins was removed rather then excluded to fix the dangling
   symlinks problem in debuginfo
+
+* Fri Dec 21 2012 Adam Tkac <atkac redhat com> - 2.28.0-25
+- rebuild against new libjpeg
 
 * Wed Oct 17 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-24
 - Rebuilt for new ocaml
