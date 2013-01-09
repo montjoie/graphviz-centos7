@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.28.0
-Release:		24%{?dist}
+Release:		25%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -300,7 +300,8 @@ export CPPFLAGS=-I`ruby -e "puts File.join(RbConfig::CONFIG['includedir'], RbCon
 	--without-qt \
 %endif
 
-make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing %{?FFSTORE}" CXXFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing %{?FFSTORE}"
+make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -fno-strict-overflow %{?FFSTORE}" \
+  CXXFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -fno-strict-overflow %{?FFSTORE}"
 
 %install
 rm -rf %{buildroot}
@@ -333,6 +334,9 @@ mv %{buildroot}%{_datadir}/%{name}/demo %{buildroot}%{_docdir}/%{name}-%{version
 
 # Rename python demos to prevent byte compilation
 find %{buildroot}%{_docdir}/%{name}-%{version}/demo -type f -name "*.py" -exec mv {} {}.demo ';'
+
+# Remove dot_builtins, on demand loading should be sufficient
+rm -f %{buildroot}%{_bindir}/dot_builtins
 
 %check
 # Minimal load test of php extension
@@ -394,7 +398,6 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc %{_docdir}/%{name}-%{version}
-%exclude %{_bindir}/dot_builtins
 %{_bindir}/*
 %dir %{_libdir}/graphviz
 %{_libdir}/*.so.*
@@ -531,6 +534,12 @@ fi
 
 
 %changelog
+* Wed Jan  9 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-25
+- Rebuilt with -fno-strict-overflow to workaround the overflow problem
+  (upstream ticket: http://www.graphviz.org/mantisbt/view.php?id=2244)
+- The dot_builtins was removed rather then excluded to fix the dangling
+  symlinks problem in debuginfo
+
 * Wed Oct 17 2012 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-24
 - Rebuilt for new ocaml
 
