@@ -47,20 +47,16 @@
 
 Name:			graphviz
 Summary:		Graph Visualization Tools
-Version:		2.28.0
-Release:		26%{?dist}
+Version:		2.30.0
+Release:		1%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
 Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
-# Fix detection of guile 2.x (#704529)
-Patch2:			graphviz-2.28.0-guile-detect.patch
 # Fix SIGSEGVs on testsuite (#645703).
 Patch3:			graphviz-2.26.0-testsuite-sigsegv-fix.patch
 # Testsuite now do diff check also in case of err output (#645703).
 Patch4:			graphviz-2.26.0-rtest-errout-fix.patch
-# Actually SWIG is broken, but patch the output to work around it.
-Patch5:                 graphviz-ocaml-4.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		/bin/ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -256,10 +252,8 @@ Various tcl packages (extensions) for the graphviz tools.
 
 %prep
 %setup -q
-%patch2 -p1 -b .guile-detect
 %patch3 -p1 -b .testsuite-sigsegv-fix
 %patch4 -p1 -b .rtest-errout-fix
-%patch5 -p1 -b .ocaml4
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -409,6 +403,7 @@ fi
 %exclude %{_docdir}/%{name}-%{version}/pdf
 %exclude %{_docdir}/%{name}-%{version}/demo
 %{_datadir}/graphviz/lefty
+%{_datadir}/graphviz/gvpr
 
 %if %{QTAPPS}
 %{_datadir}/graphviz/gvedit
@@ -534,6 +529,12 @@ fi
 
 
 %changelog
+* Mon Jan 14 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.0-1
+- New version
+  Resolves: rhbz#895027
+- Dropped guile-detect, ocaml4 patches (not needed)
+- Fixed bogus date in changelog (guessing)
+
 * Wed Jan  9 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.28.0-26
 - Rebuilt with -fno-strict-overflow to workaround the overflow problem
   (upstream ticket: http://www.graphviz.org/mantisbt/view.php?id=2244)
@@ -750,7 +751,7 @@ fi
 
 * Wed Aug 15 2007 John Ellson <ellson@research.att.com>
 - release 2.14.1 - see ChangeLog for details
-* Wed Aug 2 2007 John Ellson <ellson@research.att.com>
+* Thu Aug 2 2007 John Ellson <ellson@research.att.com>
 - release 2.14 - see ChangeLog for details
 * Fri Mar 16 2007 Stephen North <north@research.att.com>
 - remove xorg-X11-devel from rhel >= 5
