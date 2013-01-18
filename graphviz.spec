@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.0
-Release:		1%{?dist}
+Release:		2%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -529,6 +529,9 @@ fi
 
 
 %changelog
+* Fri Jan 18 2013 Adam Tkac <atkac redhat com> - 2.30.0-2
+- rebuild due to "jpeg8-ABI" feature drop
+
 * Mon Jan 14 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.0-1
 - New version
   Resolves: rhbz#895027
