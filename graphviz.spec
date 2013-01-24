@@ -5,10 +5,10 @@
 %global SHARP  1
 %endif
 
-%ifarch alpha s390 s390x sparc64
-%global OCAML  0
-%else
+%ifarch %{ocaml_arches}
 %global OCAML  1
+%else
+%global OCAML  0
 %endif
 
 %global DEVIL  1
@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.0
-Release:		2%{?dist}
+Release:		3%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -529,6 +529,9 @@ fi
 
 
 %changelog
+* Thu Jan 24 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.0-3
+- Used ocaml_arches macros to enable ocaml on supported arches
+
 * Fri Jan 18 2013 Adam Tkac <atkac redhat com> - 2.30.0-2
 - rebuild due to "jpeg8-ABI" feature drop
 
