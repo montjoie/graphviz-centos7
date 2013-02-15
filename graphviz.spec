@@ -47,12 +47,13 @@
 
 Name:			graphviz
 Summary:		Graph Visualization Tools
-Version:		2.30.0
-Release:		3%{?dist}
+Version:		2.30.1
+Release:		1%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
 Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
+Patch2:			graphviz-2.30.1-guile2-fix.patch
 # Fix SIGSEGVs on testsuite (#645703).
 Patch3:			graphviz-2.26.0-testsuite-sigsegv-fix.patch
 # Testsuite now do diff check also in case of err output (#645703).
@@ -252,6 +253,7 @@ Various tcl packages (extensions) for the graphviz tools.
 
 %prep
 %setup -q
+%patch2 -p1 -b .guile2-fix
 %patch3 -p1 -b .testsuite-sigsegv-fix
 %patch4 -p1 -b .rtest-errout-fix
 
@@ -529,6 +531,11 @@ fi
 
 
 %changelog
+* Fri Feb 15 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.1-1
+- New version
+  Resolves: rhbz#911520
+  Resolves: rhbz#704529
+
 * Thu Jan 24 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.0-3
 - Used ocaml_arches macros to enable ocaml on supported arches
 
