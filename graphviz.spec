@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.1
-Release:		2%{?dist}
+Release:		3%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -531,6 +531,9 @@ fi
 
 
 %changelog
+* Fri Mar 22 2013 Remi Collet <rcollet@redhat.com> - 2.30.1-3
+- rebuild for http://fedoraproject.org/wiki/Features/Php55
+
 * Thu Mar 14 2013 Vít Ondruch <vondruch@redhat.com> - 2.30.1-2
 - Rebuild for https://fedoraproject.org/wiki/Features/Ruby_2.0.0
 
