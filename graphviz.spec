@@ -65,6 +65,8 @@ BuildRequires:		fontconfig-devel, libtool-ltdl-devel, ruby-devel, ruby, guile-de
 BuildRequires:		libXaw-devel, libSM-devel, libXext-devel, java-devel, php-devel
 BuildRequires:		cairo-devel >= 1.1.10, pango-devel, gmp-devel, lua-devel, gtk2-devel, libgnomeui-devel
 BuildRequires:		gd-devel, perl-devel, swig >= 1.3.33
+# Temporary workaound for perl(Carp) not pulled
+BuildRequires:		perl-Carp
 %if %{SHARP}
 BuildRequires:		mono-core
 %endif
@@ -533,6 +535,7 @@ fi
 %changelog
 * Fri Mar 22 2013 Remi Collet <rcollet@redhat.com> - 2.30.1-3
 - rebuild for http://fedoraproject.org/wiki/Features/Php55
+- add explicit BuildRequires: perl-Carp (workaround)
 
 * Thu Mar 14 2013 Vít Ondruch <vondruch@redhat.com> - 2.30.1-2
 - Rebuild for https://fedoraproject.org/wiki/Features/Ruby_2.0.0
