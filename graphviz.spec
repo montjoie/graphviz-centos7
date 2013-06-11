@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.1
-Release:		7%{?dist}
+Release:		8%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -540,6 +540,9 @@ fi
 
 
 %changelog
+* Tue Jun 11 2013 Remi Collet <rcollet@redhat.com> - 2.30.1-8
+- rebuild for new GD 2.1.0
+
 * Wed May 15 2013 Tom Callaway <spot@fedoraproject.org> - 2.30.1-7
 - rebuild for lua 5.2
 
