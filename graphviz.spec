@@ -67,7 +67,7 @@ Patch5:			graphviz-2.30.1-gvc.pc-no-libgraph.patch
 Patch6:			graphviz-2.30.1-lua-5.2.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
-BuildRequires:		/bin/ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
+BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
 BuildRequires:		fontconfig-devel, libtool-ltdl-devel, ruby-devel, ruby, guile-devel, python-devel
 BuildRequires:		libXaw-devel, libSM-devel, libXext-devel, java-devel, php-devel
 BuildRequires:		cairo-devel >= 1.1.10, pango-devel, gmp-devel, lua-devel, gtk2-devel, libgnomeui-devel
