@@ -32,6 +32,9 @@
 %global LASI   0
 %endif
 
+# Plugins version
+%global pluginsver 6
+
 %global php_extdir %(php-config --extension-dir 2>/dev/null || echo %{_libdir}/php4)
 # Fix private-shared-object-provides
 # RPM 4.8
@@ -48,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.1
-Release:		8%{?dist}
+Release:		9%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -64,7 +67,7 @@ Patch5:			graphviz-2.30.1-gvc.pc-no-libgraph.patch
 Patch6:			graphviz-2.30.1-lua-5.2.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
-BuildRequires:		/bin/ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
+BuildRequires:		/bin/ksh93, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
 BuildRequires:		fontconfig-devel, libtool-ltdl-devel, ruby-devel, ruby, guile-devel, python-devel
 BuildRequires:		libXaw-devel, libSM-devel, libXext-devel, java-devel, php-devel
 BuildRequires:		cairo-devel >= 1.1.10, pango-devel, gmp-devel, lua-devel, gtk2-devel, libgnomeui-devel
@@ -343,6 +346,9 @@ find %{buildroot}%{_docdir}/%{name}-%{version}/demo -type f -name "*.py" -exec m
 # Remove dot_builtins, on demand loading should be sufficient
 rm -f %{buildroot}%{_bindir}/dot_builtins
 
+# Ghost plugins config
+touch %{buildroot}%{_libdir}/graphviz/config%{pluginsver}
+
 %check
 # Minimal load test of php extension
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} \
@@ -362,11 +368,7 @@ rm -rf %{buildroot}
 /sbin/ldconfig
 %{_bindir}/dot -c
 
-# if there is no dot after everything else is done, then remove config*
 %postun
-if [ $1 -eq 0 ]; then
-	rm -f %{_libdir}/graphviz/config* || :
-fi
 /sbin/ldconfig
 
 %if %{DEVIL}
@@ -415,6 +417,7 @@ fi
 %exclude %{_docdir}/%{name}-%{version}/demo
 %{_datadir}/graphviz/lefty
 %{_datadir}/graphviz/gvpr
+%ghost %{_libdir}/graphviz/config%{pluginsver}
 
 %if %{QTAPPS}
 %{_datadir}/graphviz/gvedit
@@ -540,6 +543,9 @@ fi
 
 
 %changelog
+* Tue Jun 25 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.1-9
+- Fixed handling of the libdir/graphviz directory
+
 * Tue Jun 11 2013 Remi Collet <rcollet@redhat.com> - 2.30.1-8
 - rebuild for new GD 2.1.0
 
