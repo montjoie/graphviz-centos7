@@ -51,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.1
-Release:		9%{?dist}
+Release:		10%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -65,6 +65,16 @@ Patch4:			graphviz-2.26.0-rtest-errout-fix.patch
 Patch5:			graphviz-2.30.1-gvc.pc-no-libgraph.patch
 # Lua 5.2
 Patch6:			graphviz-2.30.1-lua-5.2.patch
+# Accepted upstream, ticket #2302
+Patch7:			graphviz-2.30.1-smyrna-doc-opt.patch
+# Accepted upstream, ticket #2304
+Patch8:			graphviz-2.30.1-gv2gml-options-fix.patch
+# Sent upstream, ticket #2305
+Patch9:			graphviz-2.30.1-lefty-help.patch
+# Sent upstream, ticket #2306
+Patch10:		graphviz-2.30.1-prune-help.patch
+# Sent upstream, ticket #2307
+Patch11:		graphviz-2.30.1-man-fix.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -267,6 +277,11 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch4 -p1 -b .rtest-errout-fix
 %patch5 -p1 -b .cgraph
 %patch6 -p1 -b .lua-52
+%patch7 -p1 -b .smyrna-doc-opt
+%patch8 -p1 -b .gv2gml-options-fix
+%patch9 -p1 -b .lefty-help
+%patch10 -p1 -b .prune-help
+%patch11 -p1 -b .man-fix
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -543,6 +558,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jul 12 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.1-10
+- Various man and built-in help fixes
+
 * Tue Jun 25 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.1-9
 - Fixed handling of the libdir/graphviz directory
 
