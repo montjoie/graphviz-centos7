@@ -51,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.1
-Release:		10%{?dist}
+Release:		11%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -558,6 +558,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Jul 17 2013 Petr Pisar <ppisar@redhat.com> - 2.30.1-11
+- Perl 5.18 rebuild
+
 * Fri Jul 12 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.1-10
 - Various man and built-in help fixes
 
