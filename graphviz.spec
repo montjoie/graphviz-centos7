@@ -51,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.1
-Release:		12%{?dist}
+Release:		13%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -75,6 +75,8 @@ Patch9:			graphviz-2.30.1-lefty-help.patch
 Patch10:		graphviz-2.30.1-prune-help.patch
 # Sent upstream, ticket #2307
 Patch11:		graphviz-2.30.1-man-fix.patch
+# Sent upstream, ticket #2322
+Patch12:		graphviz-2.30.1-perl-fix.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -282,6 +284,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch9 -p1 -b .lefty-help
 %patch10 -p1 -b .prune-help
 %patch11 -p1 -b .man-fix
+%patch12 -p1 -b .perl-fix
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -558,6 +561,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Aug  5 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.1-13
+- Fixed FTBFS related to perl config
+  Resolves: rhbz#991915
+
 * Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.30.1-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
