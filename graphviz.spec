@@ -51,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.30.1
-Release:		13%{?dist}
+Release:		14%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -332,18 +332,18 @@ make %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing -fno-strict-ove
 %install
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} \
-	docdir=%{buildroot}%{_docdir}/%{name}-%{version} \
+	docdir=%{buildroot}%{_docdir}/%{name} \
 	pkgconfigdir=%{_libdir}/pkgconfig \
 	install
 find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 chmod -x %{buildroot}%{_datadir}/%{name}/lefty/*
 
 # Move docs to the right place
-mkdir -p %{buildroot}%{_docdir}/%{name}-%{version}
-mv %{buildroot}%{_datadir}/%{name}/doc/* %{buildroot}%{_docdir}/%{name}-%{version}
+mkdir -p %{buildroot}%{_docdir}/%{name}
+mv %{buildroot}%{_datadir}/%{name}/doc/* %{buildroot}%{_docdir}/%{name}
 
 # Install README
-install -m0644 README %{buildroot}%{_docdir}/%{name}-%{version}
+install -m0644 README %{buildroot}%{_docdir}/%{name}
 
 # PHP configuration file
 %{__mkdir_p} %{buildroot}%{_sysconfdir}/php.d
@@ -356,10 +356,10 @@ __EOF__
 find %{buildroot}%{_datadir}/%{name}/demo -type f -exec chmod a-x {} ';'
 
 # Move demos to doc
-mv %{buildroot}%{_datadir}/%{name}/demo %{buildroot}%{_docdir}/%{name}-%{version}/
+mv %{buildroot}%{_datadir}/%{name}/demo %{buildroot}%{_docdir}/%{name}/
 
 # Rename python demos to prevent byte compilation
-find %{buildroot}%{_docdir}/%{name}-%{version}/demo -type f -name "*.py" -exec mv {} {}.demo ';'
+find %{buildroot}%{_docdir}/%{name}/demo -type f -name "*.py" -exec mv {} {}.demo ';'
 
 # Remove dot_builtins, on demand loading should be sufficient
 rm -f %{buildroot}%{_bindir}/dot_builtins
@@ -422,7 +422,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc %{_docdir}/%{name}-%{version}
+%doc %{_docdir}/%{name}
 %{_bindir}/*
 %dir %{_libdir}/graphviz
 %{_libdir}/*.so.*
@@ -430,9 +430,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*.1*
 %{_mandir}/man7/*.7*
 %dir %{_datadir}/graphviz
-%exclude %{_docdir}/%{name}-%{version}/html
-%exclude %{_docdir}/%{name}-%{version}/pdf
-%exclude %{_docdir}/%{name}-%{version}/demo
+%exclude %{_docdir}/%{name}/html
+%exclude %{_docdir}/%{name}/pdf
+%exclude %{_docdir}/%{name}/demo
 %{_datadir}/graphviz/lefty
 %{_datadir}/graphviz/gvpr
 %ghost %{_libdir}/graphviz/config%{pluginsver}
@@ -467,9 +467,9 @@ rm -rf %{buildroot}
 
 %files doc
 %defattr(-,root,root,-)
-%doc %{_docdir}/%{name}-%{version}/html
-%doc %{_docdir}/%{name}-%{version}/pdf
-%doc %{_docdir}/%{name}-%{version}/demo
+%doc %{_docdir}/%{name}/html
+%doc %{_docdir}/%{name}/pdf
+%doc %{_docdir}/%{name}/demo
 
 %files gd
 %defattr(-,root,root,-)
@@ -561,6 +561,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Aug  6 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.1-14
+- Used unversioned doc directory
+  Resolves: rhbz#993803
+
 * Mon Aug  5 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.30.1-13
 - Fixed FTBFS related to perl config
   Resolves: rhbz#991915
