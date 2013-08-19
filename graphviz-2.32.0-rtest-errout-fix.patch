@@ -1,6 +1,8 @@
---- graphviz-2.26.0/rtest/rtest.sh.old	2009-12-06 00:27:49.000000000 +0100
-+++ graphviz-2.26.0/rtest/rtest.sh	2010-10-22 10:37:42.952893435 +0200
-@@ -279,14 +279,16 @@
+diff --git a/rtest/rtest.sh b/rtest/rtest.sh
+index ad6e14b..94bc044 100755
+--- a/rtest/rtest.sh
++++ b/rtest/rtest.sh
+@@ -280,14 +280,16 @@ function doTest
      $testcmd 2> errout
      RVAL=$?
  
