@@ -50,8 +50,8 @@
 
 Name:			graphviz
 Summary:		Graph Visualization Tools
-Version:		2.32.0
-Release:		2%{?dist}
+Version:		2.34.0
+Release:		1%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -538,6 +538,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Sep 16 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-1
+- New version
+  Resolves: rhbz#1005957
+
 * Sat Sep 14 2013 Richard W.M. Jones <rjones@redhat.com> - 2.32.0-2
 - Rebuild for OCaml 4.01.0.
 
