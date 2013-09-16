@@ -60,8 +60,6 @@ Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
 Patch1:			graphviz-2.32.0-testsuite-sigsegv-fix.patch
 # Testsuite now do diff check also in case of err output (#645703).
 Patch2:			graphviz-2.32.0-rtest-errout-fix.patch
-# Sent upstream, ticket #2322
-Patch3:		graphviz-2.30.1-perl-fix.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -261,7 +259,6 @@ Various tcl packages (extensions) for the graphviz tools.
 %setup -q
 %patch1 -p1 -b .testsuite-sigsegv-fix
 %patch2 -p1 -b .rtest-errout-fix
-%patch3 -p1 -b .perl-fix
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -541,6 +538,7 @@ rm -rf %{buildroot}
 * Mon Sep 16 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-1
 - New version
   Resolves: rhbz#1005957
+- Dropped perl-fix patch (upstreamed)
 
 * Sat Sep 14 2013 Richard W.M. Jones <rjones@redhat.com> - 2.32.0-2
 - Rebuild for OCaml 4.01.0.
