@@ -51,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.34.0
-Release:		1%{?dist}
+Release:		2%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -92,6 +92,11 @@ BuildRequires:		lasi-devel
 %endif
 BuildRequires:		urw-fonts, perl-ExtUtils-Embed, ghostscript-devel, librsvg2-devel
 Requires:		urw-fonts
+# The vim is required by vimdot. The vim explicit dependency is not the best
+# solution, because gvim can be used instead, but there is nothing like
+# conditional dependencies in RPM, thus explicit dependency on vim shouldn't
+# harm too much.
+Requires:		vim-enhanced
 Requires(post):		/sbin/ldconfig
 Requires(postun):	/sbin/ldconfig
 
@@ -535,6 +540,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Sep 16 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-2
+- Added explicit dependency on vim (required by vimdot)
+
 * Mon Sep 16 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-1
 - New version
   Resolves: rhbz#1005957
