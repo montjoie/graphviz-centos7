@@ -37,9 +37,6 @@
 
 %global php_extdir %(php-config --extension-dir 2>/dev/null || echo %{_libdir}/php4)
 # Fix private-shared-object-provides
-# RPM 4.8
-%{?filter_provides_in: %filter_provides_in %{php_extdir}/.*\.so$}
-%{?filter_setup}
 # RPM 4.9
 %global __provides_exclude_from %{?__provides_exclude_from:%__provides_exclude_from|}%{php_extdir}/.*\\.so$
 
@@ -51,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.34.0
-Release:		2%{?dist}
+Release:		3%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -60,6 +57,8 @@ Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
 Patch1:			graphviz-2.32.0-testsuite-sigsegv-fix.patch
 # Testsuite now do diff check also in case of err output (#645703).
 Patch2:			graphviz-2.32.0-rtest-errout-fix.patch
+# Upstream bug 0002387
+Patch3:			graphviz-2.34.0-lefty-getaddrinfo.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -130,6 +129,7 @@ supported directly by the cairo+pango based renderer in the base graphviz rpm.)
 %package doc
 Group:			Documentation
 Summary:		PDF and HTML documents for graphviz
+BuildArch:		noarch
 
 %description doc
 Provides some additional PDF and HTML documentation for graphviz.
@@ -264,6 +264,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %setup -q
 %patch1 -p1 -b .testsuite-sigsegv-fix
 %patch2 -p1 -b .rtest-errout-fix
+%patch3 -p1 -b .lefty-getaddrinfo
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -540,6 +541,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Oct 31 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-3
+- Fixed multilib conflicts
+  Rewrote lefty IO lib to use getaddrinfo instead of gethostbyname
+  (by lefty-getaddrinfo patch)
+  Resolves: rhbz#881173
+
 * Mon Sep 16 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-2
 - Added explicit dependency on vim (required by vimdot)
 
