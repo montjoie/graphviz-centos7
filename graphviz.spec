@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.34.0
-Release:		3%{?dist}
+Release:		4%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -65,7 +65,7 @@ BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
 BuildRequires:		fontconfig-devel, libtool-ltdl-devel, ruby-devel, ruby, guile-devel, python-devel
 BuildRequires:		libXaw-devel, libSM-devel, libXext-devel, java-devel, php-devel
 BuildRequires:		cairo-devel >= 1.1.10, pango-devel, gmp-devel, lua-devel, gtk2-devel, libgnomeui-devel
-BuildRequires:		gd-devel, perl-devel, swig >= 1.3.33, automake, autoconf, libtool
+BuildRequires:		gd-devel, perl-devel, swig >= 1.3.33, automake, autoconf, libtool, qpdf
 # Temporary workaound for perl(Carp) not pulled
 BuildRequires:		perl-Carp
 %if %{SHARP}
@@ -129,7 +129,6 @@ supported directly by the cairo+pango based renderer in the base graphviz rpm.)
 %package doc
 Group:			Documentation
 Summary:		PDF and HTML documents for graphviz
-BuildArch:		noarch
 
 %description doc
 Provides some additional PDF and HTML documentation for graphviz.
@@ -344,6 +343,18 @@ find %{buildroot}%{_docdir}/%{name}/demo -type f -name "*.py" -exec mv {} {}.dem
 # Remove dot_builtins, on demand loading should be sufficient
 rm -f %{buildroot}%{_bindir}/dot_builtins
 
+# Remove metadata from generated PDFs
+pushd %{buildroot}%{_docdir}/%{name}/pdf
+for f in prune lneato.1 lefty.1 gvgen.1 gc.1 dotty.1 dot.1 cluster.1
+do
+  if [ -f $f.pdf ]
+  then
+# ugly, but there is probably no better solution
+    qpdf --empty --static-id --pages $f.pdf -- $f.pdf.$$
+    mv -f $f.pdf.$$ $f.pdf
+  fi
+done
+
 # Ghost plugins config
 touch %{buildroot}%{_libdir}/graphviz/config%{pluginsver}
 
@@ -541,6 +552,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Oct 31 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-4
+- Removed metadata from generated PDFs
+  Related: rhbz#881173
+
 * Thu Oct 31 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-3
 - Fixed multilib conflicts
   Rewrote lefty IO lib to use getaddrinfo instead of gethostbyname
