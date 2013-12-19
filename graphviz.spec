@@ -1,5 +1,5 @@
 # Necessary conditionals
-%ifarch ppc64 s390 s390x sparc64 %{arm} alpha
+%ifarch ppc64 s390 s390x sparc64 %{arm} alpha aarch64
 %global SHARP  0
 %else
 %global SHARP  1
@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.34.0
-Release:		4%{?dist}
+Release:		5%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -552,6 +552,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Dec 19 2013 Peter Robinson <pbrobinson@fedoraproject.org> 2.34.0-5
+- No mono on aarch64
+
 * Thu Oct 31 2013 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-4
 - Removed metadata from generated PDFs
   Related: rhbz#881173
