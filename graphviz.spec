@@ -12,7 +12,11 @@
 %endif
 
 %global DEVIL  1
+%ifarch aarch64
+%global ARRRR  0
+%else
 %global ARRRR  1
+%endif
 
 # Build with QT applications (currently only gvedit)
 # Disabled until the package gets better structuring, see bug #447133
@@ -48,7 +52,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.34.0
-Release:		5%{?dist}
+Release:		6%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -552,6 +556,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Dec 28 2013 Peter Robinson <pbrobinson@fedoraproject.org> 2.34.0-6
+- Disable R bindings on aarch64 for the moment
+
 * Thu Dec 19 2013 Peter Robinson <pbrobinson@fedoraproject.org> 2.34.0-5
 - No mono on aarch64
 
