@@ -52,7 +52,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.34.0
-Release:		6%{?dist}
+Release:		7%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -63,6 +63,8 @@ Patch1:			graphviz-2.32.0-testsuite-sigsegv-fix.patch
 Patch2:			graphviz-2.32.0-rtest-errout-fix.patch
 # Upstream bug 0002387
 Patch3:			graphviz-2.34.0-lefty-getaddrinfo.patch
+# Fix yyerror overflow (#1049167)
+Patch4:			graphviz-2.34.0-yyerror-overflow-fix.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -268,6 +270,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch1 -p1 -b .testsuite-sigsegv-fix
 %patch2 -p1 -b .rtest-errout-fix
 %patch3 -p1 -b .lefty-getaddrinfo
+%patch4 -p1 -b .overflow-yyerror-fix
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -556,6 +559,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Jan  7 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-7
+- Fixed overflow in yyerror
+  Resolves: rhbz#1049167
+
 * Sat Dec 28 2013 Peter Robinson <pbrobinson@fedoraproject.org> 2.34.0-6
 - Disable R bindings on aarch64 for the moment
 
