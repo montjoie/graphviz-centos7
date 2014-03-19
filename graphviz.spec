@@ -1,5 +1,5 @@
 # Necessary conditionals
-%ifarch ppc64 s390 s390x sparc64 %{arm} alpha aarch64
+%ifarch %{power64} s390 s390x sparc64 %{arm} alpha aarch64
 %global SHARP  0
 %else
 %global SHARP  1
@@ -52,7 +52,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.34.0
-Release:		8%{?dist}
+Release:		9%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -67,6 +67,8 @@ Patch3:			graphviz-2.34.0-lefty-getaddrinfo.patch
 Patch4:			graphviz-2.34.0-CVE-2014-0978-CVE-2014-1235.patch
 # Fix chknum overflow (CVE-2014-1236)
 Patch5:			graphviz-2.34.0-CVE-2014-1236.patch
+# ppc64le support
+Patch6:			graphviz-2.34.0-ppc64le-support.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -274,6 +276,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch3 -p1 -b .lefty-getaddrinfo
 %patch4 -p1 -b .CVE-2014-0978-CVE-2014-1235
 %patch5 -p1 -b .CVE-2014-1236
+%patch6 -p1 -b .ppc64le-support
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -562,6 +565,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Mar 19 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-9
+- Added ppc64le support
+  Resolves: rhbz#1078464
+
 * Thu Jan  9 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.34.0-8
 - Prevent possible buffer overflow in yyerror()
   Resolves: CVE-2014-1235
