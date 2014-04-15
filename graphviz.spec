@@ -5,11 +5,7 @@
 %global SHARP  1
 %endif
 
-%ifarch %{ocaml_arches}
 %global OCAML  1
-%else
-%global OCAML  0
-%endif
 
 %global DEVIL  1
 %ifarch aarch64
@@ -52,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		1%{?dist}
+Release:		2%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -551,6 +547,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Apr 15 2014 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-2
+- Remove ocaml_arches macro (RHBZ#1087794).
+
 * Mon Apr 14 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-1
 - New version
   Resolves: rhbz#1052160
