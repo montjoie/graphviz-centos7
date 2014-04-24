@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		2%{?dist}
+Release:		3%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -547,6 +547,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Apr 24 2014 Vít Ondruch <vondruch@redhat.com> - 2.38.0-3
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.1
+
 * Tue Apr 15 2014 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-2
 - Remove ocaml_arches macro (RHBZ#1087794).
 
