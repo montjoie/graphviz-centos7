@@ -48,7 +48,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		3%{?dist}
+Release:		4%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -547,6 +547,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue May 20 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-4
+- Rebuilt for tcl/tk8.6
+
 * Thu Apr 24 2014 Vít Ondruch <vondruch@redhat.com> - 2.38.0-3
 - Rebuilt for https://fedoraproject.org/wiki/Changes/Ruby_2.1
 
