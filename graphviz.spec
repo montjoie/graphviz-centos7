@@ -48,13 +48,14 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		4%{?dist}
+Release:		5%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
 Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
 # Fix typo in testsuite (upstream ticket #2441).
 Patch0:			graphviz-2.38.0-rtest-fix.patch
+Patch1:			graphviz-2.38.0-find-fix.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -258,6 +259,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %prep
 %setup -q
 %patch0 -p1 -b .rtest-fix
+%patch1 -p1 -b .find-fix
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -547,6 +549,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed May 28 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-5
+- Fixed crash by adding additional check to findVertical/Horizontal functions
+  (by find-fix patch provided by Mattias Ellert <mattias.ellert@fysast.uu.se>)
+  Resolves: rhbz#1095419
+
 * Tue May 20 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-4
 - Rebuilt for tcl/tk8.6
 
