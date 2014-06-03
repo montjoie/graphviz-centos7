@@ -8,11 +8,7 @@
 %global OCAML  1
 
 %global DEVIL  1
-%ifarch aarch64
-%global ARRRR  0
-%else
 %global ARRRR  1
-%endif
 
 # Build with QT applications (currently only gvedit)
 # Disabled until the package gets better structuring, see bug #447133
@@ -48,7 +44,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		5%{?dist}
+Release:		6%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -549,6 +545,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Jun  3 2014 Peter Robinson <pbrobinson@fedoraproject.org> 2.38.0-6
+- Re-enable R bindings on aarch64, we now have it
+
 * Wed May 28 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-5
 - Fixed crash by adding additional check to findVertical/Horizontal functions
   (by find-fix patch provided by Mattias Ellert <mattias.ellert@fysast.uu.se>)
