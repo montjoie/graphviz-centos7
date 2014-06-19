@@ -32,9 +32,12 @@
 %global pluginsver 6
 
 %global php_extdir %(php-config --extension-dir 2>/dev/null || echo %{_libdir}/php4)
-# Fix private-shared-object-provides
-# RPM 4.9
-%global __provides_exclude_from %{?__provides_exclude_from:%__provides_exclude_from|}%{php_extdir}/.*\\.so$
+
+%if "%{php_version}" < "5.6"
+%global ini_name     %{name}.ini
+%else
+%global ini_name     40-%{name}.ini
+%endif
 
 # Fix for the 387 extended precision (rhbz#772637)
 %ifarch i386 i686
@@ -44,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		7%{?dist}
+Release:		8%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -318,7 +321,7 @@ install -m0644 README %{buildroot}%{_docdir}/%{name}
 
 # PHP configuration file
 %{__mkdir_p} %{buildroot}%{_sysconfdir}/php.d
-%{__cat} << __EOF__ > %{buildroot}%{_sysconfdir}/php.d/%{name}.ini
+%{__cat} << __EOF__ > %{buildroot}%{_sysconfdir}/php.d/%{ini_name}
 ; Enable %{name} extension module
 extension=gv.so
 __EOF__
@@ -502,7 +505,7 @@ rm -rf %{buildroot}
 
 %files php
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/php.d/%{name}.ini
+%config(noreplace) %{_sysconfdir}/php.d/%{ini_name}
 %{_libdir}/graphviz/php/
 %{php_extdir}/gv.so
 %{_datadir}/php*/*
@@ -545,6 +548,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Jun 19 2014 Remi Collet <rcollet@redhat.com> - 2.38.0-8
+- rebuild for https://fedoraproject.org/wiki/Changes/Php56
+- add numerical prefix to extension configuration file
+- cleanup filter (no more needed in F20+)
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.38.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
