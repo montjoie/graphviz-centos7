@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		8%{?dist}
+Release:		9%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -548,6 +548,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Jul 14 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-9
+- Rebuilt for new ocaml
+
 * Thu Jun 19 2014 Remi Collet <rcollet@redhat.com> - 2.38.0-8
 - rebuild for https://fedoraproject.org/wiki/Changes/Php56
 - add numerical prefix to extension configuration file
