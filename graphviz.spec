@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		11%{?dist}
+Release:		12%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -548,6 +548,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Aug 28 2014 Jitka Plesnikova <jplesnik@redhat.com> - 2.38.0-12
+- Perl 5.20 rebuild
+
 * Sat Aug 23 2014 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-11
 - ocaml-4.02.0+rc1 rebuild.
 
