@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		13%{?dist}
+Release:		14%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -55,6 +55,8 @@ Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
 # Fix typo in testsuite (upstream ticket #2441).
 Patch0:			graphviz-2.38.0-rtest-fix.patch
 Patch1:			graphviz-2.38.0-find-fix.patch
+# Not upstream patch to fix build with OCaml > 4.02.0 (upstream) and Fedora.
+Patch2:                 graphviz-2.38.0-ocaml-fix-ints.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -259,6 +261,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %setup -q
 %patch0 -p1 -b .rtest-fix
 %patch1 -p1 -b .find-fix
+%patch2 -p1
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -548,8 +551,9 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Sat Aug 30 2014 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-13
+* Sat Aug 30 2014 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-14
 - ocaml-4.02.0 final rebuild.
+- Add patch to fix build with OCaml > 4.02.0 and Fedora 22.
 
 * Thu Aug 28 2014 Jitka Plesnikova <jplesnik@redhat.com> - 2.38.0-12
 - Perl 5.20 rebuild
