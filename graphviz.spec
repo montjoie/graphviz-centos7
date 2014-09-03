@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		14%{?dist}
+Release:		15%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -551,6 +551,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Sep 03 2014 Jitka Plesnikova <jplesnik@redhat.com> - 2.38.0-15
+- Perl 5.20 rebuild
+
 * Sat Aug 30 2014 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-14
 - ocaml-4.02.0 final rebuild.
 - Add patch to fix build with OCaml > 4.02.0 and Fedora 22.
