@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		16%{?dist}
+Release:		17%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -56,7 +56,9 @@ Source0:		http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
 Patch0:			graphviz-2.38.0-rtest-fix.patch
 Patch1:			graphviz-2.38.0-find-fix.patch
 # Not upstream patch to fix build with OCaml > 4.02.0 (upstream) and Fedora.
-Patch2:                 graphviz-2.38.0-ocaml-fix-ints.patch
+Patch2:			graphviz-2.38.0-ocaml-fix-ints.patch
+# Backported from upstream
+Patch3:			graphviz-2.38.0-format-string.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -263,6 +265,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch0 -p1 -b .rtest-fix
 %patch1 -p1 -b .find-fix
 %patch2 -p1
+%patch3 -p1 -b .format-string
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -552,6 +555,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Nov 25 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-17
+- Fixed format string vulnerability
+  Resolves: rhbz#1167868
+
 * Tue Nov 11 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-16
 - Added ISO8859-1 fonts as requirement
   Resolves: rhbz#1058323
