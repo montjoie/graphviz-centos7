@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		18%{?dist}
+Release:		19%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -61,6 +61,7 @@ Patch2:			graphviz-2.38.0-ocaml-fix-ints.patch
 Patch3:			graphviz-2.38.0-format-string.patch
 # Make vimdot to work with vi (upstream ticket #2507)
 Patch4:			graphviz-2.38.0-vimdot-vi.patch
+Patch5:			graphviz-2.38.0-rbconfig.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -264,6 +265,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch2 -p1
 %patch3 -p1 -b .format-string
 %patch4 -p1 -b .vimdot-vi
+%patch5 -p1 -b .rbconfig
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -273,8 +275,8 @@ autoreconf -if
 # Hack in the java includes we need
 sed -i '/JavaVM.framework/!s/JAVA_INCLUDES=/JAVA_INCLUDES=\"_MY_JAVA_INCLUDES_\"/g' configure
 sed -i 's|_MY_JAVA_INCLUDES_|-I%{java_home}/include/ -I%{java_home}/include/linux/|g' configure
-# Rewrite config_ruby.rb to work with Ruby 1.9
-sed -i 's|expand(|expand(Config::|' config/config_ruby.rb
+# Rewrite config_ruby.rb to work with Ruby 2.2
+sed -i 's|expand(|expand(RbConfig::|' config/config_ruby.rb
 sed -i 's|sitearchdir|vendorarchdir|' config/config_ruby.rb
 
 # get the path to search for ruby/config.h to CPPFLAGS, so that configure can find it
@@ -553,6 +555,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Jan 17 2015 Mamoru TASAKA <mtasaka@fedoraproject.org> - 2.38.0-19
+- Rebuild for https://fedoraproject.org/wiki/Changes/Ruby_2.2
+- Fix obsolete Config:: usage
+
 * Fri Jan 16 2015 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-18
 - Make vimdot to work with vi, dropped explicit vim-ehnanced requirement
   Resolves: rhbz#1182764
