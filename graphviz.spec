@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		17%{?dist}
+Release:		18%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -59,6 +59,8 @@ Patch1:			graphviz-2.38.0-find-fix.patch
 Patch2:			graphviz-2.38.0-ocaml-fix-ints.patch
 # Backported from upstream
 Patch3:			graphviz-2.38.0-format-string.patch
+# Make vimdot to work with vi (upstream ticket #2507)
+Patch4:			graphviz-2.38.0-vimdot-vi.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -92,11 +94,6 @@ BuildRequires:		lasi-devel
 BuildRequires:		urw-fonts, perl-ExtUtils-Embed, ghostscript-devel, librsvg2-devel
 # ISO8859-1 fonts are required by lefty
 Requires:		urw-fonts, xorg-x11-fonts-ISO8859-1-100dpi
-# The vim is required by vimdot. The vim explicit dependency is not the best
-# solution, because gvim can be used instead, but there is nothing like
-# conditional dependencies in RPM, thus explicit dependency on vim shouldn't
-# harm too much.
-Requires:		vim-enhanced
 Requires(post):		/sbin/ldconfig
 Requires(postun):	/sbin/ldconfig
 
@@ -266,6 +263,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch1 -p1 -b .find-fix
 %patch2 -p1
 %patch3 -p1 -b .format-string
+%patch4 -p1 -b .vimdot-vi
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -555,6 +553,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jan 16 2015 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-18
+- Make vimdot to work with vi, dropped explicit vim-ehnanced requirement
+  Resolves: rhbz#1182764
+
 * Tue Nov 25 2014 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-17
 - Fixed format string vulnerability
   Resolves: rhbz#1167868
