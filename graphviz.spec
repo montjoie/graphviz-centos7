@@ -1,5 +1,5 @@
 # Necessary conditionals
-%ifarch %{power64} s390 s390x sparc64 %{arm} alpha aarch64
+%ifarch %mono_arches
 %global SHARP  0
 %else
 %global SHARP  1
@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		22%{?dist}
+Release:		23%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -555,6 +555,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon May 18 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.38.0-23
+- Rebuild (mono4)
+
 * Sat May 02 2015 Kalev Lember <kalevlember@gmail.com> - 2.38.0-22
 - Rebuilt for GCC 5 C++11 ABI change
 
