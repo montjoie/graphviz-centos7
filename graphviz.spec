@@ -1,8 +1,8 @@
 # Necessary conditionals
-%ifarch %mono_arches
-%global SHARP  0
-%else
+%ifarch %{mono_arches}
 %global SHARP  1
+%else
+%global SHARP  0
 %endif
 
 %global OCAML  1
@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		23%{?dist}
+Release:		24%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -555,6 +555,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri May 29 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.38.0-24
+- Fix mono directive orders
+
 * Mon May 18 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.38.0-23
 - Rebuild (mono4)
 
