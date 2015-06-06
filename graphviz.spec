@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		24%{?dist}
+Release:		25%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -555,6 +555,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sat Jun 06 2015 Jitka Plesnikova <jplesnik@redhat.com> - 2.38.0-25
+- Perl 5.22 rebuild
+
 * Fri May 29 2015 Peter Robinson <pbrobinson@fedoraproject.org> 2.38.0-24
 - Fix mono directive orders
 
