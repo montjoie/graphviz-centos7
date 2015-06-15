@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		25%{?dist}
+Release:		26%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -62,6 +62,7 @@ Patch3:			graphviz-2.38.0-format-string.patch
 # Make vimdot to work with vi (upstream ticket #2507)
 Patch4:			graphviz-2.38.0-vimdot-vi.patch
 Patch5:			graphviz-2.38.0-rbconfig.patch
+Patch6:			graphviz-2.38.0-visio.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -266,6 +267,8 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch3 -p1 -b .format-string
 %patch4 -p1 -b .vimdot-vi
 %patch5 -p1 -b .rbconfig
+# Upstream ticket: http://www.graphviz.org/mantisbt/view.php?id=2553
+%patch6 -p1 -b .visio
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -281,7 +284,9 @@ sed -i 's|sitearchdir|vendorarchdir|' config/config_ruby.rb
 
 # get the path to search for ruby/config.h to CPPFLAGS, so that configure can find it
 export CPPFLAGS=-I`ruby -e "puts File.join(RbConfig::CONFIG['includedir'], RbConfig::CONFIG['sitearch'])" || echo /dev/null`
-%configure --with-x --disable-static --disable-dependency-tracking --without-mylibgd --with-ipsepcola --with-pangocairo --with-gdk-pixbuf \
+%configure --with-x --disable-static --disable-dependency-tracking \
+	--without-mylibgd --with-ipsepcola --with-pangocairo \
+	--with-gdk-pixbuf --with-visio \
 %if ! %{LASI}
 	--without-lasi \
 %endif
@@ -555,6 +560,11 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Mon Jun 15 2015 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-26
+- Fixed built with visio (by visio patch)
+- Enabled visio support
+  Resolves: rhbz#1231896
+
 * Sat Jun 06 2015 Jitka Plesnikova <jplesnik@redhat.com> - 2.38.0-25
 - Perl 5.22 rebuild
 
