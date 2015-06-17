@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		26%{?dist}
+Release:		27%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -560,6 +560,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.38.0-27
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Mon Jun 15 2015 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-26
 - Fixed built with visio (by visio patch)
 - Enabled visio support
