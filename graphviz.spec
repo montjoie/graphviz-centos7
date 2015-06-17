@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		27%{?dist}
+Release:		28%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -560,6 +560,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Wed Jun 17 2015 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-28
+- ocaml-4.02.2 rebuild.
+
 * Wed Jun 17 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.38.0-27
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
