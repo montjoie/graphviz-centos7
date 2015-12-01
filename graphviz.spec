@@ -47,7 +47,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		30%{?dist}
+Release:		31%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -560,6 +560,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Dec  1 2015 Tom Callaway <spot@fedoraproject.org> - 2.38.0-31
+- rebuild for libvpx 1.5.0
+
 * Tue Jul 28 2015 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-30
 - OCaml 4.02.3 rebuild.
 
