@@ -28,6 +28,10 @@
 %global LASI   0
 %endif
 
+# Swig currently doesn't support php7, thus disabling for now
+# rhbz#1356985
+%global PHP 0
+
 # Plugins version
 %global pluginsver 6
 
@@ -47,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		36%{?dist}
+Release:		37%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -67,11 +71,14 @@ BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
 BuildRequires:		fontconfig-devel, libtool-ltdl-devel, ruby-devel, ruby, guile-devel, python-devel
-BuildRequires:		libXaw-devel, libSM-devel, libXext-devel, java-devel, php-devel
+BuildRequires:		libXaw-devel, libSM-devel, libXext-devel, java-devel
 BuildRequires:		cairo-devel >= 1.1.10, pango-devel, gmp-devel, lua-devel, gtk2-devel, libgnomeui-devel
 BuildRequires:		gd-devel, perl-devel, swig >= 1.3.33, automake, autoconf, libtool, qpdf
 # Temporary workaound for perl(Carp) not pulled
 BuildRequires:		perl-Carp
+%if %{PHP}
+BuildRequires:		php-devel
+%endif
 %if %{SHARP}
 BuildRequires:		mono-core
 %endif
@@ -205,6 +212,7 @@ Requires:		perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %description perl
 Perl extension for graphviz.
 
+%if %{PHP}
 %package php
 Group:			Applications/Multimedia
 Summary:		PHP extension for graphviz
@@ -214,6 +222,7 @@ Requires:	php(api) = %{php_core_api}
 
 %description php
 PHP extension for graphviz.
+%endif
 
 %package python
 Group:			Applications/Multimedia
@@ -331,12 +340,14 @@ mv %{buildroot}%{_datadir}/%{name}/doc/* %{buildroot}%{_docdir}/%{name}
 # Install README
 install -m0644 README %{buildroot}%{_docdir}/%{name}
 
+%if %{PHP}
 # PHP configuration file
 %{__mkdir_p} %{buildroot}%{_sysconfdir}/php.d
 %{__cat} << __EOF__ > %{buildroot}%{_sysconfdir}/php.d/%{ini_name}
 ; Enable %{name} extension module
 extension=gv.so
 __EOF__
+%endif
 
 # Remove executable modes from demos
 find %{buildroot}%{_datadir}/%{name}/demo -type f -exec chmod a-x {} ';'
@@ -366,12 +377,14 @@ done
 touch %{buildroot}%{_libdir}/graphviz/config%{pluginsver}
 
 %check
+%if %{PHP}
 # Minimal load test of php extension
 LD_LIBRARY_PATH=%{buildroot}%{_libdir} \
 php --no-php-ini \
     --define extension_dir=%{buildroot}%{_libdir}/graphviz/php/ \
     --define extension=libgv_php.so \
     --modules | grep gv
+%endif
 
 # upstream test suite
 # testsuite seems broken, disabling it for now
@@ -515,6 +528,7 @@ rm -rf %{buildroot}
 %{_libdir}/perl*/*
 %{_mandir}/man3/gv.3perl*
 
+%if %{PHP}
 %files php
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/php.d/%{ini_name}
@@ -522,6 +536,7 @@ rm -rf %{buildroot}
 %{php_extdir}/gv.so
 %{_datadir}/php*/*
 %{_mandir}/man3/gv.3php*
+%endif
 
 %files python
 %defattr(-,root,root,-)
@@ -560,6 +575,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Jul 15 2016 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-37
+- Conditionalized php support and disabled it due to rhbz#1356985
+
 * Fri Jul 15 2016 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-36
 - Rebuilt for php
 
