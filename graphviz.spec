@@ -51,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		38%{?dist}
+Release:		39%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -67,6 +67,7 @@ Patch3:			graphviz-2.38.0-format-string.patch
 Patch4:			graphviz-2.38.0-vimdot-vi.patch
 Patch5:			graphviz-2.38.0-rbconfig.patch
 Patch6:			graphviz-2.38.0-visio.patch
+Patch7:			graphviz-2.38.0-gs-9.18-fix.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -278,6 +279,7 @@ Various tcl packages (extensions) for the graphviz tools.
 %patch5 -p1 -b .rbconfig
 # Upstream ticket: http://www.graphviz.org/mantisbt/view.php?id=2553
 %patch6 -p1 -b .visio
+%patch7 -p1 -b .gs-9.18-fix
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
@@ -575,6 +577,10 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Fri Oct 14 2016 Jaroslav Škarvada <jskarvad@redhat.com> - 2.38.0-39
+- Fixed build with ghostscript-9.18+
+  Resolves: rhbz#1384016
+
 * Tue Jul 19 2016 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 2.38.0-38
 - https://fedoraproject.org/wiki/Changes/Automatic_Provides_for_Python_RPM_Packages
 
