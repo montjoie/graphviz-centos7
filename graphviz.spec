@@ -51,7 +51,7 @@
 Name:			graphviz
 Summary:		Graph Visualization Tools
 Version:		2.38.0
-Release:		40%{?dist}
+Release:		41%{?dist}
 Group:			Applications/Multimedia
 License:		EPL
 URL:			http://www.graphviz.org/
@@ -68,6 +68,7 @@ Patch4:			graphviz-2.38.0-vimdot-vi.patch
 Patch5:			graphviz-2.38.0-rbconfig.patch
 Patch6:			graphviz-2.38.0-visio.patch
 Patch7:			graphviz-2.38.0-gs-9.18-fix.patch
+Patch8:			graphviz-2.38.0-CVE-2020-18032.patch
 BuildRoot:		%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:		zlib-devel, libpng-devel, libjpeg-devel, expat-devel, freetype-devel >= 2
 BuildRequires:		ksh, bison, m4, flex, tk-devel, tcl-devel >= 8.3, swig
@@ -101,7 +102,7 @@ BuildRequires:		gts-devel
 %if %{LASI}
 BuildRequires:		lasi-devel
 %endif
-BuildRequires:		urw-fonts, perl-ExtUtils-Embed, perl-generators, ghostscript-devel, librsvg2-devel
+BuildRequires:		urw-fonts, perl-ExtUtils-Embed, ghostscript, ghostscript-devel, librsvg2-devel
 # ISO8859-1 fonts are required by lefty
 Requires:		urw-fonts, xorg-x11-fonts-ISO8859-1-100dpi
 Requires(post):		/sbin/ldconfig
@@ -280,9 +281,13 @@ Various tcl packages (extensions) for the graphviz tools.
 # Upstream ticket: http://www.graphviz.org/mantisbt/view.php?id=2553
 %patch6 -p1 -b .visio
 %patch7 -p1 -b .gs-9.18-fix
+%patch8 -p1 -b .CVE-2020-18032
 
 # Attempt to fix rpmlint warnings about executable sources
 find -type f -regex '.*\.\(c\|h\)$' -exec chmod a-x {} ';'
+
+# necessary for generating version.m4
+./autogen.sh
 
 %build
 autoreconf -if
@@ -577,6 +582,12 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Jul 01 2021 Corentin Labbe <clabbe@baylibre.com> - 2.38.0-41
+- Fixed buffer overflow in lib/common/shapes.c
+  Resolves: CVE-2020-18032
+- Added ghostscript necessary for build (need ps2pdf)
+- Run autogen.sh at prep step since configure complain about missing version.m4
+
 * Sat Nov 05 2016 Richard W.M. Jones <rjones@redhat.com> - 2.38.0-40
 - Rebuild for OCaml 4.04.0.
 
